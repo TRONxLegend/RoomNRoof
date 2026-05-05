@@ -1,0 +1,171 @@
+@reference "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+}
+
+
+@layer base {  
+  
+  *{
+    @apply scroll-smooth;
+  }
+  
+  a {
+    @apply no-underline;
+    text-decoration: none !important;
+  }
+  
+  a:hover {
+    @apply no-underline;
+    text-decoration: none !important;
+  }
+  
+  a:focus {
+    @apply no-underline;
+    text-decoration: none !important;
+  }
+  
+  a:visited {
+    @apply no-underline;
+    text-decoration: none !important;
+  }
+}
+
+@layer utilities {
+  /* Custom animations */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+    background: linear-gradient(
+      to right,
+      #f0fdf4 0%,
+      #dcfce7 20%,
+      #f0fdf4 40%,
+      #f0fdf4 100%
+    );
+    background-size: 1000px 100%;
+  }
+  
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Glass morphism effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  }
+   .glass-dark {
+    background: rgba(15, 15, 15, 0.65);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  }
+  .dark .glass {
+    background: rgba(17, 24, 39, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+}
+
+/* Fix native select dropdown */
+select {
+  color-scheme: dark;
+}
+
+select option {
+  background-color: #0b0b0b;
+  color: #ffffff;
+}
+
+.borders{
+  border: 4px solid red;
+}
+/* @keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+.marquee-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  animation: marquee 20s linear infinite;
+  will-change: transform;
+} */
+@media (max-width: 640px) {
+  .animate-marquee {
+    animation: marquee 10s linear infinite;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+}
+
+.marquee__inner {
+  display: flex;
+  width: max-content;
+  gap: 0.75rem;
+  animation: marquee 25s linear infinite;
+}
+@media (min-width: 768px) {
+  .marquee__inner {
+    animation-duration: 40s;
+  }
+}
