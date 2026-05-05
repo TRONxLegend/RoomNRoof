@@ -33,7 +33,7 @@ const SaleForm = () => {
 
     try {
       await toast.promise(
-        axios.post("http://localhost:5000/api/sale/sale", formData),
+        axios.post(`${import.meta.env.VITE_API_URL}/api/sale/sale`, formData),
         {
           loading: "Submitting property...",
           success: "Property listed successfully!",

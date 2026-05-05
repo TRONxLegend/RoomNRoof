@@ -30,7 +30,7 @@ const BookEnquiryForm = () => {
 
     try {
       await toast.promise(
-        axios.post("http://localhost:5000/api/enquiries/book", formData),
+        axios.post(`${import.meta.env.VITE_API_URL}/api/enquiries/book`, formData),
         {
           loading: "Submitting enquiry...",
           success: "Enquiry submitted successfully! We’ll contact you soon.",

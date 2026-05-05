@@ -33,7 +33,7 @@ const RentPropertyForm = () => {
 
     try {
       await toast.promise(
-        axios.post("http://localhost:5000/api/rent/rent", formData),
+        axios.post(`${import.meta.env.VITE_API_URL}/api/rent/rent`, formData),
         {
           loading: "Submitting property...",
           success: "Property listed successfully!",

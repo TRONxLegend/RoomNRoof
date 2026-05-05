@@ -32,7 +32,7 @@ const InteriorForm = () => {
 
     try {
       await toast.promise(
-        axios.post("http://localhost:5000/api/interior/interior", formData),
+        axios.post(`${import.meta.env.VITE_API_URL}/api/interior/interior`, formData),
         {
           loading: "Submitting enquiry...",
           success: "Enquiry submitted successfully! We'll contact you soon.",
