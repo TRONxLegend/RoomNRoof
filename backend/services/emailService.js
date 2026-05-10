@@ -15,7 +15,7 @@ const toast = {
 // Resend SMTP transport (replaces Gmail SMTP — works on all free hosting tiers)
 const transporter = nodemailer.createTransport({
   host: 'smtp.resend.com',
-  port: 465,
+  port: 587,
   secure: true,
   auth: {
     user: 'resend',               // always literally the string "resend"
