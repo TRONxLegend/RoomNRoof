@@ -12,27 +12,15 @@ const toast = {
   warn: (msg) => console.log(`⚠️  [WARN] ${new Date().toLocaleTimeString()} - ${msg}`)
 };
 
-// Create transporter (using Gmail as example, you can configure with your SMTP)
-// const transporter = nodemailer.createTransport({
-//   service: 'gmail',
-//   auth: {
-//     user: process.env.EMAIL_USER,
-//     pass: process.env.EMAIL_PASS, // Use App Password for Gmail
-//   },
-// });
-
+// Resend SMTP transport (replaces Gmail SMTP — works on all free hosting tiers)
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // IMPORTANT
+  host: 'smtp.resend.com',
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: 'resend',               // always literally the string "resend"
+    pass: process.env.RESEND_API_KEY,
   },
-  tls: {
-    rejectUnauthorized: false,
-  },
-  connectionTimeout: 10000, // prevent hanging
 });
 
 export const sendPropertyEmail = async (propertyData) => {
@@ -67,16 +55,16 @@ export const sendPropertyEmail = async (propertyData) => {
     // Email options
     toast.info('Preparing email with attachment...');
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_FROM,   // e.g. "Room & Roof <noreply@yourdomain.com>"
       to: 'roomnroof02@gmail.com',
       subject: 'New Property Listing - Room & Roof Reality',
       text: `A new property has been submitted for rent.\n\nName: ${propertyData.name}\nEmail: ${propertyData.email}\nPhone: ${propertyData.phone}\nProperty Type: ${propertyData.propertyType}\nAddress: ${propertyData.address}\nCity: ${propertyData.city}\nState: ${propertyData.state}\nBHK: ${propertyData.bhk}\nArea: ${propertyData.area}\nRent Amount: ${propertyData.rentAmount}`,
       html: `
         <h2>New Property Listing</h2>
-        <p>A new property has been submitted for rent.</p> 
+        <p>A new property has been submitted for rent.</p>
         <table border="1" cellpadding="10" style="border-collapse: collapse;">
           <tr><td><strong>Name</strong></td><td>${propertyData.name}</td></tr>
-          <tr><td><strong> Email</strong></td><td>${propertyData.email}</td></tr>
+          <tr><td><strong>Email</strong></td><td>${propertyData.email}</td></tr>
           <tr><td><strong>Phone</strong></td><td>${propertyData.phone}</td></tr>
           <tr><td><strong>Property Type</strong></td><td>${propertyData.propertyType}</td></tr>
           <tr><td><strong>Address</strong></td><td>${propertyData.address}</td></tr>
@@ -86,7 +74,6 @@ export const sendPropertyEmail = async (propertyData) => {
           <tr><td><strong>Area</strong></td><td>${propertyData.area}</td></tr>
           <tr><td><strong>Rent Amount</strong></td><td>${propertyData.rentAmount}</td></tr>
           <tr><td><strong>Description</strong></td><td>${propertyData.description || 'N/A'}</td></tr>
-  
         </table>
       `,
       attachments: [
@@ -97,21 +84,21 @@ export const sendPropertyEmail = async (propertyData) => {
       ],
     };
 
-    toast.info('Sending email via SMTP...');
+    toast.info('Sending email via Resend SMTP...');
     await transporter.sendMail(mailOptions);
-    console.log('Property email sent successfully');
+    toast.success('Property email sent successfully');
   } catch (error) {
-    console.error('Error sending property email:', error);
+    toast.error(`Error sending property email: ${error.message}`);
     throw error;
   }
 };
 
 export const SalePropertyEmail = async (saleData) => {
   try {
-    toast.info('Starting property email service...');
+    toast.info('Starting property sale email service...');
 
     // Create Excel workbook
-    toast.info('Creating Excel workbook for property data...');
+    toast.info('Creating Excel workbook for property sale data...');
     const workbook = XLSX.utils.book_new();
     const worksheetData = [
       ['Name', saleData.name],
@@ -138,16 +125,16 @@ export const SalePropertyEmail = async (saleData) => {
     // Email options
     toast.info('Preparing email with attachment...');
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_FROM,
       to: 'roomnroof02@gmail.com',
       subject: 'New Property Sale - Room & Roof Reality',
       text: `A new property has been submitted for sale.\n\nName: ${saleData.name}\nEmail: ${saleData.email}\nPhone: ${saleData.phone}\nProperty Type: ${saleData.propertyType}\nAddress: ${saleData.address}\nCity: ${saleData.city}\nState: ${saleData.state}\nBHK: ${saleData.bhk}\nArea: ${saleData.area}\nSale Amount: ${saleData.saleAmount}`,
       html: `
         <h2>New Property Sale</h2>
-        <p>A new property has been submitted for sale.</p> 
+        <p>A new property has been submitted for sale.</p>
         <table border="1" cellpadding="10" style="border-collapse: collapse;">
           <tr><td><strong>Name</strong></td><td>${saleData.name}</td></tr>
-          <tr><td><strong> Email</strong></td><td>${saleData.email}</td></tr>
+          <tr><td><strong>Email</strong></td><td>${saleData.email}</td></tr>
           <tr><td><strong>Phone</strong></td><td>${saleData.phone}</td></tr>
           <tr><td><strong>Property Type</strong></td><td>${saleData.propertyType}</td></tr>
           <tr><td><strong>Address</strong></td><td>${saleData.address}</td></tr>
@@ -157,7 +144,6 @@ export const SalePropertyEmail = async (saleData) => {
           <tr><td><strong>Area</strong></td><td>${saleData.area}</td></tr>
           <tr><td><strong>Sale Amount</strong></td><td>${saleData.saleAmount}</td></tr>
           <tr><td><strong>Description</strong></td><td>${saleData.description || 'N/A'}</td></tr>
-  
         </table>
       `,
       attachments: [
@@ -168,11 +154,11 @@ export const SalePropertyEmail = async (saleData) => {
       ],
     };
 
-    toast.info('Sending email via SMTP...');
+    toast.info('Sending email via Resend SMTP...');
     await transporter.sendMail(mailOptions);
-    console.log('Property Sale email sent successfully');
+    toast.success('Property sale email sent successfully');
   } catch (error) {
-    console.error('Error sending property email:', error);
+    toast.error(`Error sending property sale email: ${error.message}`);
     throw error;
   }
 };
@@ -205,7 +191,7 @@ export const sendEnquiryEmail = async (enquiryData) => {
     // Email options
     toast.info('Preparing email with attachment...');
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_FROM,
       to: 'roomnroof02@gmail.com',
       subject: 'New Property Enquiry - Room & Roof Reality',
       text: `A new property enquiry has been received.\n\nName: ${enquiryData.name}\nEmail: ${enquiryData.email}\nPhone: ${enquiryData.phone}\nProperty Type: ${enquiryData.propertyType}\nBudget: ${enquiryData.budget}\nLocation: ${enquiryData.location}\nMessage: ${enquiryData.message || 'N/A'}`,
@@ -230,11 +216,11 @@ export const sendEnquiryEmail = async (enquiryData) => {
       ],
     };
 
-    toast.info('Sending email via SMTP...');
+    toast.info('Sending email via Resend SMTP...');
     await transporter.sendMail(mailOptions);
-    console.log('Enquiry email sent successfully');
+    toast.success('Enquiry email sent successfully');
   } catch (error) {
-    console.error('Error sending enquiry email:', error);
+    toast.error(`Error sending enquiry email: ${error.message}`);
     throw error;
   }
 };
@@ -242,6 +228,7 @@ export const sendEnquiryEmail = async (enquiryData) => {
 export const sendInteriorEmail = async (interiorData) => {
   try {
     toast.info('Starting interior email service...');
+
     // Create Excel workbook
     toast.info('Creating Excel workbook for interior data...');
     const workbook = XLSX.utils.book_new();
@@ -255,15 +242,18 @@ export const sendInteriorEmail = async (interiorData) => {
       ['Message', interiorData.message || ''],
       ['Submitted At', new Date().toLocaleString()],
     ];
+
     const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Interior Details');
+
     // Generate Excel buffer
     toast.info('Generating Excel file buffer...');
     const excelBuffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+
     // Email options
     toast.info('Preparing email with attachment...');
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_FROM,
       to: 'roomnroof02@gmail.com',
       subject: 'New Interior Design Request - Room & Roof Reality',
       text: `A new interior design request has been received.\n\nName: ${interiorData.name}\nEmail: ${interiorData.email}\nPhone: ${interiorData.phone}\nRoom Type: ${interiorData.roomType}\nStyle: ${interiorData.style}\nBudget: ${interiorData.budget}\nMessage: ${interiorData.message || 'N/A'}`,
@@ -278,8 +268,8 @@ export const sendInteriorEmail = async (interiorData) => {
           <tr><td><strong>Style</strong></td><td>${interiorData.style}</td></tr>
           <tr><td><strong>Budget</strong></td><td>${interiorData.budget}</td></tr>
           <tr><td><strong>Message</strong></td><td>${interiorData.message || 'N/A'}</td></tr>
-          </table>
-          `,
+        </table>
+      `,
       attachments: [
         {
           filename: `interior_${Date.now()}.xlsx`,
@@ -287,11 +277,12 @@ export const sendInteriorEmail = async (interiorData) => {
         },
       ],
     };
-    toast.info('Sending email via SMTP...');
+
+    toast.info('Sending email via Resend SMTP...');
     await transporter.sendMail(mailOptions);
-    console.log('Interior design email sent successfully');
+    toast.success('Interior design email sent successfully');
   } catch (error) {
-    console.error('Error sending interior design email:', error);
+    toast.error(`Error sending interior design email: ${error.message}`);
     throw error;
   }
 };
