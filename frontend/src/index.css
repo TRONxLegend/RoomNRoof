@@ -19,7 +19,7 @@ body {
 @layer base {  
   
   *{
-    @apply scroll-smooth;
+    /* removed @apply scroll-smooth to fix Lenis lag */
   }
   
   a {
@@ -104,6 +104,43 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   }
+
+  /* Reticle Moving Dot Animation */
+  @keyframes reticleMove {
+    0% {
+      top: 24.5px;
+      left: 24.5px;
+    }
+    25% {
+      top: 24.5px;
+      left: calc(100% - 24.5px);
+    }
+    50% {
+      top: calc(100% - 24.5px);
+      left: calc(100% - 24.5px);
+    }
+    75% {
+      top: calc(100% - 24.5px);
+      left: 24.5px;
+    }
+    100% {
+      top: 24.5px;
+      left: 24.5px;
+    }
+  }
+
+  .reticle-dot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 12px 3px rgba(255, 255, 255, 0.8);
+    transform: translate(-50%, -50%);
+    animation: reticleMove 8s linear infinite;
+    z-index: 20;
+    pointer-events: none;
+  }
 }
 
 /* Fix native select dropdown */
@@ -169,3 +206,4 @@ select option {
     animation-duration: 40s;
   }
 }
+

@@ -47,11 +47,11 @@ const Home = () => {
     },
   ];
 
-  const stats = [
-    { number: "500+", label: "Properties Listed" },
-    { number: "1000+", label: "Happy Clients" },
-    { number: "98%", label: "Satisfaction Rate" },
-  ];
+  // const stats = [
+  //   { number: "500+", label: "Properties Listed" },
+  //   { number: "1000+", label: "Happy Clients" },
+  //   { number: "98%", label: "Satisfaction Rate" },
+  // ];
 
   return (
     <div className="min-h-[80vh] md:min-h-screen bg-[#030303] ">
@@ -80,7 +80,7 @@ const Home = () => {
       {/* Features Section */}
       <section className="relative bg-black py-32">
         {/* subtle depth background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-transparent" />
 
         <div className="relative max-w-7xl mx-auto px-6">
           {/* Heading */}
@@ -95,48 +95,6 @@ const Home = () => {
 
           {/* Cards */}
           <PropertyActions />
-        </div>
-      </section>
-
-
-      {/* Stats Section */}
-      <section className="relative bg-[#030303] text-white py-24">
-        {/* background depth (NO pointer events) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 via-transparent to-transparent pointer-events-none" />
-
-        <div className="relative max-w-7xl mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-semibold text-center mb-20">
-            Signals That Converted
-          </h1>
-
-          <div className="grid md:grid-cols-3 gap-12 text-center">
-            {stats.map((stat, i) => (
-              <motion.div
-                key={i}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
-                className="
-                group relative z-10 cursor-pointer
-                rounded-2xl border border-white/10
-                bg-black/40 py-12
-                transition-all
-              "
-              >
-                {/* Number */}
-                <div className="text-5xl font-semibold mb-3 text-white group-hover:text-blue-500 transition-colors duration-300">
-                  {stat.number}
-                </div>
-
-                {/* Label */}
-                <div className="text-lg text-white/60 group-hover:text-blue-400 transition-colors duration-300">
-                  {stat.label}
-                </div>
-
-                {/* Underline */}
-                <div className="mx-auto mt-6 h-[3px] w-12 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 

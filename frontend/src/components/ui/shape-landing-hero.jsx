@@ -140,7 +140,7 @@ function ShapeLandingHero({
                         variants={fadeUpVariants}
                         initial="hidden"
                         animate="visible"
-                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.08]"
+                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.08] -translate-y-8 md:translate-y-0"
                     >
                         <Circle className="h-2 w-2 fill-blue-500/80" />
 
